@@ -1,9 +1,8 @@
-# require 'securerandom'
-
 class CheckController < ApplicationController
 
   def receives_data
-    response = JSON.parse(request.raw_post)
+    response = JSON.parse(request.body.string)
+
     body = response['body']
     tests = response['tests']
 
@@ -15,15 +14,37 @@ class CheckController < ApplicationController
       f.puts body
       f.puts tests
     end
-    # results = `docker run --rm -v /tmp/#{unique_id}:/opt/code ruby:2.3 rspec /opt/code/code.rb`
-    results = `docker run --rm -v /tmp/#{unique_id}:/opt/code ruby:2.3 which rspec`
-    # results = `docker run --rm -v /tmp/#{unique_id}:/opt/code ruby:2.3 rspec /opt/code/code.rb`
-    p results
+    puts "*" * 10
+    puts "*" * 10
+    puts "*" * 10
+    puts "*" * 10
 
+    results = `docker run --rm -v /tmp/#{unique_id}:/opt/code ruby:2.3rspec rspec -f json /opt/code/code.rb`
+    results = JSON.parse(results)
+    p results['examples'][0]['description']
+    raise
+    results = results.split(/(?=[0-9]+\))/)
+    results.shift # removes the FFFFF and Failures part
+    p results.first
+    filtered_answer = extractor(results)
 
-
-    render json: "success"
-    # it just needs to render the errors
-    # and if there are none return 200 or something
+    render json: filtered_answer
   end
+
+  def extractor(results)
+    answer = []
+    results.each do |result|
+      answer.push({
+        expected: result.match(regex("expected"))[0],
+        got: result.match(regex("got"))[0],
+      })
+    end
+
+    answer
+  end
+
+  def regex(word)
+    /(?<=#{word}:).+(?=(\\n)+)?/
+  end
+
 end
