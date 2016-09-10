@@ -53,6 +53,9 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-harrow (0.5.3)
+    capistrano-rails (1.1.7)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
@@ -183,6 +186,7 @@ DEPENDENCIES
   byebug
   capistrano
   capistrano-bundler
+  capistrano-rails
   capistrano-rvm
   capistrano3-puma
   database_cleaner
