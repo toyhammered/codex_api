@@ -1,7 +1,7 @@
 
 
 # Change these
-server '45.55.202.128', port: 80, roles: [:web, :app, :db], primary: true
+server '45.55.202.128', roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:toyhammered/codex_api.git'
 set :application,     'codex_api'
