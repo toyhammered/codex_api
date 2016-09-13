@@ -5,6 +5,10 @@
   git push origin master
   cap production deploy
 ```
+
+Restart the Nginx service: (after pushing new git stuff)
+  * `sudo service nginx restart`
+
 Tutorials:
 
 1) https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh#where-to-go-from-here?
